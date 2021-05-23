@@ -1,0 +1,103 @@
+﻿<Window x:Class="DonutCP.View.Windows.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DonutCP.View.Windows"
+        mc:Ignorable="d"
+        Title="Login" Height="450" Width="380"
+        Icon="/Images\DonutIconN.ico"
+        Background="Transparent"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+
+            <Border Grid.RowSpan="2">
+                <Border.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#B34EE9" Offset="0.0"/>
+                        <GradientStop Color="#FFDD00" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <StackPanel VerticalAlignment="Center" Grid.Row="0">
+                <TextBlock Text="Вход"
+                       FontWeight="Light"
+                       FontFamily="Helbetica"
+                       FontSize="24"
+                       Foreground="Black"
+                       HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" >
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Tag="Имя пользователя"
+                             FontFamily="Helvetica"
+                             FontWeight="Light"
+                             FontSize="20"
+                             HorizontalAlignment="Center"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Width="235"
+                             HorizontalContentAlignment="Left"
+                             Opacity="0.5"
+                             Height="25"
+                             Margin="63,0,0,0"
+                             />
+                </StackPanel>
+                <Border Width="250"
+                        Height="2"
+                        Background="White"
+                        Opacity="0.5"/>
+
+
+                <StackPanel >
+                    <PasswordBox Name="PasswordBox"
+                             FontFamily="Helvetica"
+                             FontWeight="Light"
+                             Password="Password"
+                             FontSize="20"
+                             HorizontalAlignment="Center"
+                             Foreground="White"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Width="235"
+                             HorizontalContentAlignment="Left"
+                             Opacity="0.5"
+                             Height="25"
+                             Margin="-13,0,0,0"/>
+
+                </StackPanel>
+                <Border Width="250"
+                        Height="2"
+                        Background="White"
+                        Opacity="0.5" />
+
+                <StackPanel Orientation="Vertical" Margin="0,30,0,0">
+                    <Button Name="LoginButton" Width="150" Height="40" Content="ВОЙТИ" Margin="60,0,60,0" Command=""/>
+                    <TextBlock FontFamily="Helvetica"
+                             FontWeight="Light"
+                             Text="или"
+                             FontSize="20"
+                             HorizontalAlignment="Center"
+                             Foreground="White"
+                             Background="Transparent"
+                             TextAlignment="Center"
+                             Width="55"
+                             Opacity="0.5"
+                             Height="25"
+                             Margin="0,0,0,0"/>
+                    <Button Width="150" Height="40" 
+                            Content="ЗАРЕГИСТРИРОВАТЬ"/>
+                </StackPanel>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</Window>

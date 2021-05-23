@@ -1,0 +1,470 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище DonutCP" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Files">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="File_Path" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="File_Type" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="High_Lights">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Note_Id" Type="int" Nullable="false" />
+          <Property Name="Start_Text_Index" Type="int" Nullable="false" />
+          <Property Name="Length_Hight_Light" Type="int" Nullable="false" />
+          <Property Name="Text_Hight_Light" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Author_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nickname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description_note" Type="nvarchar(max)" />
+          <Property Name="Text_note" Type="nvarchar(max)" />
+          <Property Name="Author_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NoteAccess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NoteId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Access_Type" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="NoteMediaContent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NoteId" Type="int" Nullable="false" />
+          <Property Name="FileId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User_Login" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="User_Image" Type="image" />
+          <Property Name="PasswordHash" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Access_To_Note">
+          <End Role="Note" Type="Self.Note" Multiplicity="1" />
+          <End Role="NoteAccess" Type="Self.NoteAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Note">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NoteAccess">
+              <PropertyRef Name="NoteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Hight_Light_To_Note">
+          <End Role="Note" Type="Self.Note" Multiplicity="1" />
+          <End Role="High_Lights" Type="Self.High_Lights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Note">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="High_Lights">
+              <PropertyRef Name="Note_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Hight_Light_To_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="High_Lights" Type="Self.High_Lights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="High_Lights">
+              <PropertyRef Name="Author_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Media_To_Files">
+          <End Role="Files" Type="Self.Files" Multiplicity="1" />
+          <End Role="NoteMediaContent" Type="Self.NoteMediaContent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Files">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NoteMediaContent">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Media_To_Note">
+          <End Role="Note" Type="Self.Note" Multiplicity="1" />
+          <End Role="NoteMediaContent" Type="Self.NoteMediaContent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Note">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NoteMediaContent">
+              <PropertyRef Name="NoteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Note_To_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Note" Type="Self.Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Note">
+              <PropertyRef Name="Author_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Access_To_Note">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="NoteAccess" Type="Self.NoteAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NoteAccess">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище DonutCPContainer">
+          <EntitySet Name="Files" EntityType="Self.Files" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="High_Lights" EntityType="Self.High_Lights" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Note" EntityType="Self.Note" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NoteAccess" EntityType="Self.NoteAccess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NoteMediaContent" EntityType="Self.NoteMediaContent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Access_To_Note" Association="Self.FK_Access_To_Note">
+            <End Role="Note" EntitySet="Note" />
+            <End Role="NoteAccess" EntitySet="NoteAccess" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Hight_Light_To_Note" Association="Self.FK_Hight_Light_To_Note">
+            <End Role="Note" EntitySet="Note" />
+            <End Role="High_Lights" EntitySet="High_Lights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Hight_Light_To_Users" Association="Self.FK_Hight_Light_To_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="High_Lights" EntitySet="High_Lights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Media_To_Files" Association="Self.FK_Media_To_Files">
+            <End Role="Files" EntitySet="Files" />
+            <End Role="NoteMediaContent" EntitySet="NoteMediaContent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Media_To_Note" Association="Self.FK_Media_To_Note">
+            <End Role="Note" EntitySet="Note" />
+            <End Role="NoteMediaContent" EntitySet="NoteMediaContent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Note_To_Users" Association="Self.FK_Note_To_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Note" EntitySet="Note" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Access_To_Note" Association="Self.FK_User_Access_To_Note">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="NoteAccess" EntitySet="NoteAccess" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DonutCP" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Files">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="File_Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="File_Type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="NoteMediaContent" Relationship="Self.FK_Media_To_Files" FromRole="Files" ToRole="NoteMediaContent" />
+        </EntityType>
+        <EntityType Name="High_Lights">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Note_Id" Type="Int32" Nullable="false" />
+          <Property Name="Start_Text_Index" Type="Int32" Nullable="false" />
+          <Property Name="Length_Hight_Light" Type="Int32" Nullable="false" />
+          <Property Name="Text_Hight_Light" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Author_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Note" Relationship="Self.FK_Hight_Light_To_Note" FromRole="High_Lights" ToRole="Note" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Hight_Light_To_Users" FromRole="High_Lights" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nickname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description_note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Text_note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Author_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="High_Lights" Relationship="Self.FK_Hight_Light_To_Note" FromRole="Note" ToRole="High_Lights" />
+          <NavigationProperty Name="NoteAccess" Relationship="Self.FK_Access_To_Note" FromRole="Note" ToRole="NoteAccess" />
+          <NavigationProperty Name="NoteMediaContent" Relationship="Self.FK_Media_To_Note" FromRole="Note" ToRole="NoteMediaContent" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Note_To_Users" FromRole="Note" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="NoteAccess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NoteId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Access_Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Note" Relationship="Self.FK_Access_To_Note" FromRole="NoteAccess" ToRole="Note" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_Access_To_Note" FromRole="NoteAccess" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="NoteMediaContent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NoteId" Type="Int32" Nullable="false" />
+          <Property Name="FileId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Files" Relationship="Self.FK_Media_To_Files" FromRole="NoteMediaContent" ToRole="Files" />
+          <NavigationProperty Name="Note" Relationship="Self.FK_Media_To_Note" FromRole="NoteMediaContent" ToRole="Note" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_Login" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="User_Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="PasswordHash" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="High_Lights" Relationship="Self.FK_Hight_Light_To_Users" FromRole="Users" ToRole="High_Lights" />
+          <NavigationProperty Name="Note" Relationship="Self.FK_Note_To_Users" FromRole="Users" ToRole="Note" />
+          <NavigationProperty Name="NoteAccess" Relationship="Self.FK_User_Access_To_Note" FromRole="Users" ToRole="NoteAccess" />
+        </EntityType>
+        <Association Name="FK_Media_To_Files">
+          <End Role="Files" Type="Self.Files" Multiplicity="1" />
+          <End Role="NoteMediaContent" Type="Self.NoteMediaContent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Files">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NoteMediaContent">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Hight_Light_To_Note">
+          <End Role="Note" Type="Self.Note" Multiplicity="1" />
+          <End Role="High_Lights" Type="Self.High_Lights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Note">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="High_Lights">
+              <PropertyRef Name="Note_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Hight_Light_To_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="High_Lights" Type="Self.High_Lights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="High_Lights">
+              <PropertyRef Name="Author_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Access_To_Note">
+          <End Role="Note" Type="Self.Note" Multiplicity="1" />
+          <End Role="NoteAccess" Type="Self.NoteAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Note">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NoteAccess">
+              <PropertyRef Name="NoteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Media_To_Note">
+          <End Role="Note" Type="Self.Note" Multiplicity="1" />
+          <End Role="NoteMediaContent" Type="Self.NoteMediaContent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Note">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NoteMediaContent">
+              <PropertyRef Name="NoteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Note_To_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Note" Type="Self.Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Note">
+              <PropertyRef Name="Author_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Access_To_Note">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="NoteAccess" Type="Self.NoteAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NoteAccess">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DonutDataBase" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Files" EntityType="Self.Files" />
+          <EntitySet Name="High_Lights" EntityType="Self.High_Lights" />
+          <EntitySet Name="Note" EntityType="Self.Note" />
+          <EntitySet Name="NoteAccess" EntityType="Self.NoteAccess" />
+          <EntitySet Name="NoteMediaContent" EntityType="Self.NoteMediaContent" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_Media_To_Files" Association="Self.FK_Media_To_Files">
+            <End Role="Files" EntitySet="Files" />
+            <End Role="NoteMediaContent" EntitySet="NoteMediaContent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Hight_Light_To_Note" Association="Self.FK_Hight_Light_To_Note">
+            <End Role="Note" EntitySet="Note" />
+            <End Role="High_Lights" EntitySet="High_Lights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Hight_Light_To_Users" Association="Self.FK_Hight_Light_To_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="High_Lights" EntitySet="High_Lights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Access_To_Note" Association="Self.FK_Access_To_Note">
+            <End Role="Note" EntitySet="Note" />
+            <End Role="NoteAccess" EntitySet="NoteAccess" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Media_To_Note" Association="Self.FK_Media_To_Note">
+            <End Role="Note" EntitySet="Note" />
+            <End Role="NoteMediaContent" EntitySet="NoteMediaContent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Note_To_Users" Association="Self.FK_Note_To_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Note" EntitySet="Note" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Access_To_Note" Association="Self.FK_User_Access_To_Note">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="NoteAccess" EntitySet="NoteAccess" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище DonutCPContainer" CdmEntityContainer="DonutDataBase">
+          <EntitySetMapping Name="Files">
+            <EntityTypeMapping TypeName="DonutCP.Files">
+              <MappingFragment StoreEntitySet="Files">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="File_Path" ColumnName="File_Path" />
+                <ScalarProperty Name="File_Type" ColumnName="File_Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="High_Lights">
+            <EntityTypeMapping TypeName="DonutCP.High_Lights">
+              <MappingFragment StoreEntitySet="High_Lights">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Note_Id" ColumnName="Note_Id" />
+                <ScalarProperty Name="Start_Text_Index" ColumnName="Start_Text_Index" />
+                <ScalarProperty Name="Length_Hight_Light" ColumnName="Length_Hight_Light" />
+                <ScalarProperty Name="Text_Hight_Light" ColumnName="Text_Hight_Light" />
+                <ScalarProperty Name="Author_Id" ColumnName="Author_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Note">
+            <EntityTypeMapping TypeName="DonutCP.Note">
+              <MappingFragment StoreEntitySet="Note">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="Description_note" ColumnName="Description_note" />
+                <ScalarProperty Name="Text_note" ColumnName="Text_note" />
+                <ScalarProperty Name="Author_Id" ColumnName="Author_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NoteAccess">
+            <EntityTypeMapping TypeName="DonutCP.NoteAccess">
+              <MappingFragment StoreEntitySet="NoteAccess">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NoteId" ColumnName="NoteId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Access_Type" ColumnName="Access_Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NoteMediaContent">
+            <EntityTypeMapping TypeName="DonutCP.NoteMediaContent">
+              <MappingFragment StoreEntitySet="NoteMediaContent">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NoteId" ColumnName="NoteId" />
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DonutCP.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="User_Login" ColumnName="User_Login" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="User_Image" ColumnName="User_Image" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

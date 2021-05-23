@@ -1,0 +1,194 @@
+﻿<Window x:Class="DonutCP.View.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DonutCP.View.Windows" 
+        xmlns:viewmodels="clr-namespace:DonutCP.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:DataManageVM}"
+        mc:Ignorable="d"
+        Icon="/Images\DonutIconN.ico"
+        Title="{Binding Title}" Height="650" Width="900"
+        Background="Transparent" ResizeMode="NoResize">
+
+
+    <Border Grid.ColumnSpan="2">
+        <Border.Background>
+            <LinearGradientBrush>
+                <GradientStop Color="#B34EE9" Offset="0.0"/>
+                <GradientStop Color="#FFDD00" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Border.Background>
+
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="8*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Image x:Name="Icon" Source="/Images\DonutIcon.ico"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Width="50px"
+                   Height="50px"
+                   />
+                <TextBlock Text="МЕНЮ"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right"
+                       Foreground="White"
+                       FontSize="24"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <RadioButton    Command="{Binding RadioSettings}"
+                                Content="Главное меню"
+                                Height="70px"
+                                FontSize="22"
+                                Style="{StaticResource MenuButton}"/>
+
+                <RadioButton    Command="{Binding RadioSettings}"
+                                Content="Профиль"
+                                Height="70px"
+                                FontSize="22"
+                                Style="{StaticResource MenuButton}"/>
+
+                <RadioButton    Command="{Binding RadioSettings}"
+                                Content="Настройки записки"
+                                Height="70px"
+                                FontSize="22"
+                                Style="{StaticResource MenuButton}"/>
+                <RadioButton    Command="{Binding RadioSettings}"
+                                Content="Кнопка свин"
+                                Height="70px"
+                                FontSize="22"
+                                Style="{StaticResource MenuButton}">
+                </RadioButton>
+            </StackPanel>
+
+            <StackPanel Grid.Row="0" Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                <Button Command="{Binding AddItem}" Style="{StaticResource BaseButton}">
+                    <ContentControl Height="50" Content="{StaticResource PlusIcon}" />
+                </Button>
+
+                <Button
+                        Margin="-2,0,0,0"
+                        Command="{Binding EditNote}"
+                        CommandParameter="{Binding SelectedNote}"
+                        Style="{StaticResource BaseButton}">
+                    <ContentControl Height="50" Content="{StaticResource PanIcon}" />
+                </Button>
+
+                <Button
+                        Margin="-2,0,0,0"
+                        Command="{Binding DeleteNote}"
+                        CommandParameter="{Binding SelectedNote}"
+                        Style="{StaticResource BaseButton}">
+                    <ContentControl Height="50" Content="{StaticResource TrashIcon}" />
+                </Button>
+
+            </StackPanel>
+
+            <!--<StackPanel x:Name="MainNote"
+                        Grid.Row="1" Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top">
+                <TextBox x:Name="NoteName" 
+                         Width="600px" 
+                         Height="55px"
+                         Background="Transparent"
+                         Foreground="{StaticResource BaseTextBrush}"/>
+
+                <TextBox x:Name="NoteText" 
+                         Width="600px" 
+                         Height="440px"
+                         Background="Transparent"
+                         Foreground="{StaticResource BaseTextBrush}"/>
+            </StackPanel>-->
+
+            <!--<StackPanel x:Name="MainProfile"
+                        Grid.Row="1" Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top">
+                <ListBox  x:Name="ListBoxUserImage"  Background="Transparent" Width="220" Height="220">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding UserProfileImage}" Height="220" Width="220" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Сменить имя" Width="100px" Height="30px" Background="Transparent"
+                             FontFamily="{StaticResource BaseFont}"
+                             Foreground="{StaticResource BaseTextBrush}"
+                             VerticalAlignment="Center"/>
+                    <TextBox Width="200px" Height="30px"  Background="Transparent"
+                             VerticalAlignment="Top"
+                             Text="{Binding UserName}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Сменить почту" Width="100px" Height="30px" Background="Transparent"
+                             FontFamily="{StaticResource BaseFont}"
+                             Foreground="{StaticResource BaseTextBrush}"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"/>
+                    <TextBox Width="200px" Height="30px"  Background="Transparent"
+                             VerticalAlignment="Top"
+                             Text="{Binding UserEmail}"/>
+                </StackPanel>
+            </StackPanel>-->
+
+            <TabControl x:Name="ListHightLights"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center"
+                        Width="600px"
+                        Height="500px">
+                <TabItem Name="Lists">
+                    <TabItem.Header>
+                        <TextBlock Text="Заметки"/>
+                    </TabItem.Header>
+                </TabItem>
+                <ListView ItemsSource="{Binding }">
+                    <ListView.View>
+                        <GridView>
+                            
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <TabItem Name="Lists">
+                    <TabItem.Header>
+                        <TextBlock Text="Выноски"/>
+                    </TabItem.Header>
+                </TabItem>
+                <ListView ItemsSource="{Binding AllHightLights}">
+                    <ListView.View>
+                        <GridView>
+
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabControl>
+            
+            <!--<StackPanel x:Name="MainSettings"
+                        Grid.Row="1" Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top">
+
+
+            </StackPanel>-->
+        </Grid>
+
+    </Border>
+</Window>
