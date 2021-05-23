@@ -89,6 +89,7 @@
     <Compile Include="Model\High_Lights.cs">
       <DependentUpon>DonutDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\Note.cs">
       <DependentUpon>DonutDB.tt</DependentUpon>
     </Compile>
@@ -101,14 +102,21 @@
     <Compile Include="Model\Users.cs">
       <DependentUpon>DonutDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Services\Accounts\AccountStore.cs" />
+    <Compile Include="Services\Accounts\IAccountStore.cs" />
     <Compile Include="Services\AuthenticationServices\AuthenticationServices.cs" />
     <Compile Include="Services\AuthenticationServices\IAuthenticationServices.cs" />
     <Compile Include="Services\GenericDataServices.cs" />
+    <Compile Include="Services\Navigators\INavigator.cs" />
+    <Compile Include="Services\Navigators\IRenavigator.cs" />
+    <Compile Include="Services\Navigators\Navigator.cs" />
+    <Compile Include="Services\Navigators\ViewModelDelegateRenavigator.cs" />
     <Compile Include="Services\RelayCommand.cs" />
     <Compile Include="ViewModels\AddView.cs" />
     <Compile Include="ViewModels\DataManageVM.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="View\Windows\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
@@ -120,8 +128,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\OnPropertyVM.cs" />
     <Compile Include="View\Windows\Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\AddNewNote.xaml.cs">
+      <DependentUpon>AddNewNote.xaml</DependentUpon>
     </Compile>
     <Page Include="Theme\ButtonLogin.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -160,6 +172,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Windows\Registration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\AddNewNote.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

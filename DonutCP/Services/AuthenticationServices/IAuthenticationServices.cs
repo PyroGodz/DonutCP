@@ -18,7 +18,7 @@ namespace DonutCP.Services.AuthenticationServices
         }
         public interface IAuthenticationService
         {
-            Task<bool> Registration(string email, string username, string password);
+            Task<bool> Register(string email, string username, string password);
             Task<Users> Login(string username, string password);
         }
     }

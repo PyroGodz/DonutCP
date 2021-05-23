@@ -154,33 +154,35 @@
                         VerticalAlignment="Top"
                         HorizontalAlignment="Center"
                         Width="600px"
-                        Height="500px">
-                <TabItem Name="Lists">
+                        Height="450px">
+                <TabItem Name="MainListNotes">
                     <TabItem.Header>
                         <TextBlock Text="Заметки"/>
                     </TabItem.Header>
+                    <ListView ItemsSource="{Binding }">
+                        <ListView.View>
+                            <GridView>
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                 </TabItem>
-                <ListView ItemsSource="{Binding }">
-                    <ListView.View>
-                        <GridView>
-                            
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <TabItem Name="Lists">
+
+                <TabItem Name="MainListHightLight">
                     <TabItem.Header>
                         <TextBlock Text="Выноски"/>
                     </TabItem.Header>
-                </TabItem>
-                <ListView ItemsSource="{Binding AllHightLights}">
-                    <ListView.View>
-                        <GridView>
 
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                    <ListView ItemsSource="{Binding AllHightLights}">
+                        <ListView.View>
+                            <GridView>
+                                
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </TabItem>
             </TabControl>
-            
+
             <!--<StackPanel x:Name="MainSettings"
                         Grid.Row="1" Grid.Column="1"
                         HorizontalAlignment="Center"

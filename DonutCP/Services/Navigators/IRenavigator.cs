@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DonutCP.Services
+namespace DonutCP.Services.Navigators
 {
-    public class GenericDataServices<T>
+    public interface IRenavigator
     {
-
-
+        void Renavigate();
     }
 }

@@ -1,49 +1,15 @@
 ﻿using DonutCP.Model;
+using DonutCP.Services.AuthenticationServices;
+using DonutCP.Services.Navigators;
+using DonutCP.View.Windows;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace DonutCP.ViewModels
 {
-    class RegistrationViewModel : INotifyPropertyChanged
+    class RegistrationViewModel : OnPropertyVM
     {
-
-
-        private Users user;
-        private string nickname;
-        private string email;
-        public Users User
-        {
-            get { return user; }
-            set
-            {
-                user = value;
-                OnPropertyChanged("SelectedUser");
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
-        public string Nick
-        {
-            get { return nickname; }
-            set
-            {
-                nickname = value;
-                OnPropertyChanged(Nick);
-            }
-        }
-        public string Email
-        {
-            get { return email; }
-            set
-            {
-                email = value;
-                OnPropertyChanged(Email);
-            }
-        }
+        
     }
 }

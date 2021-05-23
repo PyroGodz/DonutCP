@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DonutCP.Services
+namespace DonutCP.Model
 {
-    public class GenericDataServices<T>
+    interface IDataService
     {
-
-
     }
 }

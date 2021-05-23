@@ -26,5 +26,8 @@ namespace DonutCP.ViewModels
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        //Методы открытия окон
+        
     }
 }
