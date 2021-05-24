@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище DonutCP" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище DonutDB" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Files">
           <Key>
             <PropertyRef Name="Id" />
@@ -59,7 +59,8 @@
           <Property Name="User_Login" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="User_Image" Type="image" />
-          <Property Name="PasswordHash" Type="varbinary(max)" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PasswordSalt" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <Association Name="FK_Access_To_Note">
           <End Role="Note" Type="Self.Note" Multiplicity="1" />
@@ -145,7 +146,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Хранилище DonutCPContainer">
+        <EntityContainer Name="Хранилище DonutDBContainer">
           <EntitySet Name="Files" EntityType="Self.Files" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="High_Lights" EntityType="Self.High_Lights" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Note" EntityType="Self.Note" Schema="dbo" store:Type="Tables" />
@@ -185,7 +186,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="DonutCP" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="DonutDB" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Files">
           <Key>
             <PropertyRef Name="Id" />
@@ -251,7 +252,8 @@
           <Property Name="User_Login" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="User_Image" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="PasswordHash" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordSalt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="High_Lights" Relationship="Self.FK_Hight_Light_To_Users" FromRole="Users" ToRole="High_Lights" />
           <NavigationProperty Name="Note" Relationship="Self.FK_Note_To_Users" FromRole="Users" ToRole="Note" />
           <NavigationProperty Name="NoteAccess" Relationship="Self.FK_User_Access_To_Note" FromRole="Users" ToRole="NoteAccess" />
@@ -381,9 +383,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище DonutCPContainer" CdmEntityContainer="DonutDataBase">
+        <EntityContainerMapping StorageEntityContainer="Хранилище DonutDBContainer" CdmEntityContainer="DonutDataBase">
           <EntitySetMapping Name="Files">
-            <EntityTypeMapping TypeName="DonutCP.Files">
+            <EntityTypeMapping TypeName="DonutDB.Files">
               <MappingFragment StoreEntitySet="Files">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="File_Path" ColumnName="File_Path" />
@@ -392,7 +394,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="High_Lights">
-            <EntityTypeMapping TypeName="DonutCP.High_Lights">
+            <EntityTypeMapping TypeName="DonutDB.High_Lights">
               <MappingFragment StoreEntitySet="High_Lights">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Note_Id" ColumnName="Note_Id" />
@@ -404,7 +406,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Note">
-            <EntityTypeMapping TypeName="DonutCP.Note">
+            <EntityTypeMapping TypeName="DonutDB.Note">
               <MappingFragment StoreEntitySet="Note">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Nickname" ColumnName="Nickname" />
@@ -415,7 +417,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NoteAccess">
-            <EntityTypeMapping TypeName="DonutCP.NoteAccess">
+            <EntityTypeMapping TypeName="DonutDB.NoteAccess">
               <MappingFragment StoreEntitySet="NoteAccess">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NoteId" ColumnName="NoteId" />
@@ -425,7 +427,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NoteMediaContent">
-            <EntityTypeMapping TypeName="DonutCP.NoteMediaContent">
+            <EntityTypeMapping TypeName="DonutDB.NoteMediaContent">
               <MappingFragment StoreEntitySet="NoteMediaContent">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NoteId" ColumnName="NoteId" />
@@ -434,13 +436,14 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="DonutCP.Users">
+            <EntityTypeMapping TypeName="DonutDB.Users">
               <MappingFragment StoreEntitySet="Users">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="User_Login" ColumnName="User_Login" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="User_Image" ColumnName="User_Image" />
                 <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

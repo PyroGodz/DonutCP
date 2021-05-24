@@ -1,24 +1,66 @@
-﻿using Microsoft.Win32;
+﻿using DonutCP.Model;
+using DonutCP.Model.DataServices;
+using DonutCP.Services;
+using DonutCP.View.Windows;
+using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 
 namespace DonutCP.ViewModels
 {
-    class MainViewModel
-    {
+	class MainViewModel : BaseVM
+	{
 		public string Picture;
 		public byte[] PictureForByte;
 
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		public void OnPropertyChanged([CallerMemberName] string prop = "")
+		private List<Note> allNotes = DataServices.GetAllNotes(CurrentUserId._CurrentUserID);
+		public List<Note> AllNotes
 		{
-			if (PropertyChanged != null)
-				PropertyChanged(this, new PropertyChangedEventArgs(prop));
+			get { return allNotes; }
+            set
+            {
+				allNotes = value;
+				NotifyPropertyChanged(nameof(AllNotes));
+            }
 		}
+		private string noteName;
+		public string NoteName
+		{
+			get { return noteName; }
+			set
+			{
+				noteName = value;
+				NotifyPropertyChanged(nameof(NoteName));
+			}
+		}
+
+		private string descriptionName;
+		public string DescriptionName
+		{
+			get { return descriptionName; }
+			set
+			{
+				descriptionName = value;
+				NotifyPropertyChanged(nameof(DescriptionName));
+			}
+		}
+		public ICommand OpenAddNewNoteWindow => new RelayCommand(obj =>
+		{
+			AddNewNoteWindow newWind = new AddNewNoteWindow();
+			newWind.Show();
+		});
+
+		public ICommand AddNewNote => new RelayCommand(obj =>
+		{
+			DataServices.CreateNote(NoteName, DescriptionName, CurrentUserId._CurrentUserID);
+			Window oldWind = (Window)obj;
+			oldWind.Close();
+		});
 		private void Button_Pict(object sender, RoutedEventArgs e)
 		{
 			try
@@ -42,6 +84,7 @@ namespace DonutCP.ViewModels
 			}
 		}
 
+		public BaseVM CurrentViewModel { get; }
 
 	}
 }

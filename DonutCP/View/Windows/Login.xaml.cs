@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DonutCP.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,8 @@ namespace DonutCP.View.Windows
         public Login()
         {
             InitializeComponent();
+
+            DataContext = new LoginViewModel();
         }
     }
 }

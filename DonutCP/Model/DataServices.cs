@@ -1,4 +1,5 @@
 ﻿using DonutCP.Model;
+using DonutCP.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,14 @@ namespace DonutCP.Model.DataServices
         {
             using (DonutDataBase db = new DonutDataBase())
             {
-                var result = db.Note.ToList();
-                return result;
-            }
+                Note _note = db.Note.FirstOrDefault(p => p.Author_Id== userId);
+                if(_note!=null)
+                {
+                    var result = db.Note.ToList();
+                    return result;
+                }
+            };
+            return new List<Note>();
         }
 
         public static List<High_Lights> GetAllHightLights()
@@ -27,20 +33,25 @@ namespace DonutCP.Model.DataServices
             }
         }
 
-        public static string CreateUser(string name, string email, byte[] passsword)
+        public static string CreateUser(string name, string email, string passsword)
         {
             string result = "Уже существует";
+            var hasher = new Hasher();
+            if (passsword == null || email == null || name == null) return result = "Не заполнено поле";
+            var salt = hasher.GetSalt();
+            var hash = hasher.Encrypt(passsword, salt);
             using (DonutDataBase db = new DonutDataBase())
             {
                 //check the user is exist
-                bool checkIsExist = db.Users.Any(el => el.User_Login == name && el.Email == email && el.PasswordHash == passsword);
+                bool checkIsExist = db.Users.Any(el => el.User_Login == name && el.Email == email && el.PasswordHash == hash && el.PasswordSalt == salt);
                 if (!checkIsExist)
                 {
                     Users newUser = new Users
                     {
                         User_Login = name,
                         Email = email,
-                        PasswordHash = passsword
+                        PasswordHash = passsword,
+                        PasswordSalt = salt
                     };
                     db.Users.Add(newUser);
                     db.SaveChanges();
@@ -48,6 +59,27 @@ namespace DonutCP.Model.DataServices
                 }
                 return result;
             }
+        }
+
+        public static string LoginUser(string name, string password)
+        {
+            string result = "Неверный логин или пароль";
+            var hasher = new Hasher();
+            if (password == null || name == null) return "Не заполнено поле";
+            
+            using (DonutDataBase db = new DonutDataBase())
+            {
+                Users user = db.Users.FirstOrDefault(p => p.User_Login == name);
+                if (user != null)
+                {
+                    var salt = user.PasswordSalt;
+                    var hash = user.PasswordHash;
+                    var doesHash = hasher.Encrypt(password, salt);
+                    if (doesHash != hash) return "Ошибка";
+                    return Convert.ToString(user.Id);
+                }
+            }
+            return result;
         }
 
         public static string EditUser(Users oldUser, string newName, string newEmail, byte[] newImage)
@@ -69,13 +101,12 @@ namespace DonutCP.Model.DataServices
             return result;
         }
 
-        public static string CreateNote(int userId)
+        public static string CreateNote(string name, string description ,int userId)
         {
             using (DonutDataBase db = new DonutDataBase())
             {
                 string result = "Создано";
-                string name = "Заметка";
-                Note newNote = new Note { Nickname = name, Author_Id = userId };
+                Note newNote = new Note { Nickname = name,Description_note = description, Author_Id = userId };
                 db.Note.Add(newNote);
                 db.SaveChanges();
                 return result;

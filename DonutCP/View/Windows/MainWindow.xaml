@@ -1,11 +1,11 @@
 ﻿<Window x:Class="DonutCP.View.Windows.MainWindow"
+         x:Name="MainMainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DonutCP.View.Windows" 
         xmlns:viewmodels="clr-namespace:DonutCP.ViewModels" 
-        d:DataContext="{d:DesignInstance Type=viewmodels:DataManageVM}"
         mc:Ignorable="d"
         Icon="/Images\DonutIconN.ico"
         Title="{Binding Title}" Height="650" Width="900"
@@ -76,7 +76,8 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
-                <Button Command="{Binding AddItem}" Style="{StaticResource BaseButton}">
+                <Button Command="{Binding OpenAddNewNoteWindow}"
+                        Style="{StaticResource BaseButton}">
                     <ContentControl Height="50" Content="{StaticResource PlusIcon}" />
                 </Button>
 
@@ -148,47 +149,53 @@
                 </StackPanel>
             </StackPanel>-->
 
-            <TabControl x:Name="ListHightLights"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        Width="600px"
-                        Height="500px">
-                <TabItem Name="Lists">
-                    <TabItem.Header>
-                        <TextBlock Text="Заметки"/>
-                    </TabItem.Header>
-                </TabItem>
-                <ListView ItemsSource="{Binding }">
-                    <ListView.View>
-                        <GridView>
-                            
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <TabItem Name="Lists">
-                    <TabItem.Header>
-                        <TextBlock Text="Выноски"/>
-                    </TabItem.Header>
-                </TabItem>
-                <ListView ItemsSource="{Binding AllHightLights}">
-                    <ListView.View>
-                        <GridView>
-
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </TabControl>
-            
-            <!--<StackPanel x:Name="MainSettings"
+            <!--<ListView   ItemsSource="{Binding AllNotes}"
                         Grid.Row="1" Grid.Column="1"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top">
+                        Background="Transparent"
+                        Foreground="{StaticResource BaseTextBrush}"
+                        FontSize="22"
+                        FontFamily="{StaticResource BaseFont}"
+                        Height="500px"
+                        Width="650px">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Имя записки"
+                                        DisplayMemberBinding="{Binding Path=Nickname}"
+                                        Width="250px"
+                                        />
 
+                        <GridViewColumn Header="Описание записки"
+                                        DisplayMemberBinding="{Binding Path=escription_note}"
+                                        Width="400px"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>-->
 
-            </StackPanel>-->
+            <ListBox Grid.Row="1" VerticalAlignment="Center"
+                     HorizontalAlignment="Center" Width="650px"
+                     Height="400px" Grid.ColumnSpan="2" Margin="196,76,48,76"
+                     >
+                <ListBox.Template>
+                    <ControlTemplate>
+                        <DockPanel>
+                            <Grid
+                            Margin="2 0"
+                            DockPanel.Dock="Top"
+                            Height="30" Background="#121212">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width=".5*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                FontWeight="bold" HorizontalAlignment="Center">Название игры</TextBlock>
+                                <TextBlock Grid.Column="1" 
+                                FontWeight="Bold" HorizontalAlignment="Center">Рекорд</TextBlock>
+                            </Grid>
+                            <ItemsPresenter/>
+                        </DockPanel>
+                    </ControlTemplate>
+                </ListBox.Template>
+            </ListBox>
         </Grid>
-
     </Border>
 </Window>

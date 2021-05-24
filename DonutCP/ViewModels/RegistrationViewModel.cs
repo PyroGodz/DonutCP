@@ -1,31 +1,30 @@
 ﻿using DonutCP.Model;
+using DonutCP.Model.DataServices;
+using DonutCP.Services;
+using DonutCP.View.Windows;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Input;
 
 namespace DonutCP.ViewModels
 {
-    class RegistrationViewModel : INotifyPropertyChanged
+    class RegistrationViewModel : BaseVM
     {
 
 
         private Users user;
         private string nickname;
         private string email;
+        private string password;
         public Users User
         {
             get { return user; }
             set
             {
                 user = value;
-                OnPropertyChanged("SelectedUser");
+                NotifyPropertyChanged("SelectedUser");
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
         public string Nick
         {
@@ -33,7 +32,7 @@ namespace DonutCP.ViewModels
             set
             {
                 nickname = value;
-                OnPropertyChanged(Nick);
+                NotifyPropertyChanged(Nick);
             }
         }
         public string Email
@@ -42,8 +41,34 @@ namespace DonutCP.ViewModels
             set
             {
                 email = value;
-                OnPropertyChanged(Email);
+                NotifyPropertyChanged(Email);
             }
+        }
+
+        public string Password
+        {
+            get { return password; }
+            set
+            {
+                password = value;
+                NotifyPropertyChanged(Password);
+            }
+        }
+
+        public ICommand OpenLoginRegistration => new RelayCommand(obj =>
+        {
+            string resultStr = "Что-то пошло не так";
+            resultStr = DataServices.CreateUser(Nick, Email, Password);
+            ShowMessageToUser(resultStr);
+            Window oldWind = (Window)obj;
+            Login newMainWindowWindow = new Login();
+            newMainWindowWindow.Show();
+            oldWind.Close();
+        });
+
+        private void ShowMessageToUser(string message)
+        {
+            MessageView messageView = new MessageView(message);
         }
     }
 }

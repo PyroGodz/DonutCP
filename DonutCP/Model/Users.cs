@@ -26,7 +26,8 @@ namespace DonutCP.Model
         public string User_Login { get; set; }
         public string Email { get; set; }
         public byte[] User_Image { get; set; }
-        public byte[] PasswordHash { get; set; }
+        public string PasswordHash { get; set; }
+        public string PasswordSalt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<High_Lights> High_Lights { get; set; }

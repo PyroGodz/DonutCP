@@ -1,9 +1,12 @@
 ﻿<Window x:Class="DonutCP.View.Windows.Login"
+        x:Name="mainLoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DonutCP.View.Windows"
+        xmlns:local="clr-namespace:DonutCP.View.Windows" 
+        xmlns:components="clr-namespace:DonutCP.Services" 
+        xmlns:viewmodels="clr-namespace:DonutCP.ViewModels" 
         mc:Ignorable="d"
         Title="Login" Height="450" Width="380"
         Icon="/Images\DonutIconN.ico"
@@ -38,6 +41,7 @@
             <StackPanel Grid.Row="1" >
                 <StackPanel Orientation="Horizontal">
                     <TextBox Tag="Имя пользователя"
+                             Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              FontFamily="Helvetica"
                              FontWeight="Light"
                              FontSize="20"
@@ -58,20 +62,18 @@
 
 
                 <StackPanel >
-                    <PasswordBox Name="PasswordBox"
-                             FontFamily="Helvetica"
-                             FontWeight="Light"
-                             Password="Password"
-                             FontSize="20"
+                    <components:BindablePasswordBox
                              HorizontalAlignment="Center"
                              Foreground="White"
                              Background="Transparent"
                              BorderThickness="0"
-                             Width="235"
+                             Width="235px"
                              HorizontalContentAlignment="Left"
                              Opacity="0.5"
                              Height="25"
-                             Margin="-13,0,0,0"/>
+                             Margin="0,0,-5,0"
+                             Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
 
                 </StackPanel>
                 <Border Width="250"
@@ -80,7 +82,9 @@
                         Opacity="0.5" />
 
                 <StackPanel Orientation="Vertical" Margin="0,30,0,0">
-                    <Button Name="LoginButton" Width="150" Height="40" Content="ВОЙТИ" Margin="60,0,60,0" Command=""/>
+                    <Button Name="LoginButton" Width="150" Height="40" Content="ВОЙТИ" Margin="60,0,60,0" 
+                            Command="{Binding OpenMainLogin}"
+                            CommandParameter="{Binding ElementName=mainLoginWindow}"/>
                     <TextBlock FontFamily="Helvetica"
                              FontWeight="Light"
                              Text="или"
@@ -94,7 +98,9 @@
                              Height="25"
                              Margin="0,0,0,0"/>
                     <Button Width="150" Height="40" 
-                            Content="ЗАРЕГИСТРИРОВАТЬ"/>
+                            Content="ЗАРЕГИСТРИРОВАТЬ"
+                            Command="{Binding OpenRegistrationLogin}"
+                            CommandParameter="{Binding ElementName=mainLoginWindow}"/>
                 </StackPanel>
             </StackPanel>
 

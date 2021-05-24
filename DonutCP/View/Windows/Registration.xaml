@@ -1,9 +1,11 @@
 ﻿<Window x:Class="DonutCP.View.Windows.Registration"
+        x:Name="mainRegisrationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DonutCP.View.Windows"
+        xmlns:local="clr-namespace:DonutCP.View.Windows" 
+        xmlns:components="clr-namespace:DonutCP.Services" 
         mc:Ignorable="d"
         Title="Registration" Height="450" Width="380"
         Icon="/Images\DonutIconN.ico"
@@ -61,21 +63,18 @@
                         Opacity="0.5"/>
 
                 <StackPanel >
-                    <PasswordBox x:Name="RegistrationPasswordBox"
-                             FontFamily="Helvetica"
-                             PasswordChar="♥"
-                             FontWeight="Light"
-                             Password="Password"
-                             FontSize="20"
+                    <components:BindablePasswordBox
                              HorizontalAlignment="Center"
                              Foreground="White"
                              Background="Transparent"
                              BorderThickness="0"
-                             Width="235"
+                             Width="235px"
                              HorizontalContentAlignment="Left"
                              Opacity="0.5"
                              Height="25"
-                             Margin="-13,0,0,0"/>
+                             Margin="0,0,-5,0"
+                             Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
 
                 </StackPanel>
                 <Border Width="250"
@@ -110,8 +109,8 @@
                     <Button Width="150" 
                             Height="40" 
                             Content="ЗАРЕГИСТРИРОВАТЬ"
-                            Command="{Binding AddCommand}"
-                            CommandParameter="{Binding ElementName=RegistrationPasswordBox}"/>
+                            Command="{Binding OpenLoginRegistration}"
+                            CommandParameter="{Binding ElementName=mainRegisrationWindow}"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

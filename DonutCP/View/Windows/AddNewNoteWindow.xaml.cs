@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace DonutCP.View.Windows
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для AddNewNoteWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AddNewNoteWindow : Window
     {
-        public MainWindow()
+        public AddNewNoteWindow()
         {
             InitializeComponent();
-            
             DataContext = new MainViewModel();
         }
     }
