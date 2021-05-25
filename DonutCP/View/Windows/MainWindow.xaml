@@ -91,8 +91,7 @@
                 </Button>
 
                 <Button Margin="-2, 0, 0, 0"
-                        Command="{Binding OpenNote}"
-                        CommandParameter=""
+                        Command="{Binding OpenNoteWindow}"
                         Style="{StaticResource BaseButton}">
                     <ContentControl Height="50px" Content="{StaticResource SearchIcon}"/>
                 </Button>
@@ -185,56 +184,31 @@
                                         />
                                 <GridViewColumn Header="Описание записки"
                                         DisplayMemberBinding="{Binding Path=Description_note}"
-                                        Width="600px"/>
+                                        Width="500px"/>
+                                <GridViewColumn Header="Автор"
+                                        DisplayMemberBinding="{Binding Path=Author_Id}"
+                                        Width="100px"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
                 </TabItem>
-                <TabItem Name="HightLightTab" Background="Transparent" Foreground="{StaticResource BaseTextBrush}">
+                <TabItem Name="HightLightTab" Background="Transparent" 
+                         Foreground="{StaticResource BaseTextBrush}">
                     <TabItem.Header>
-                        <TextBlock Text="Выноски" Background="Transparent" Foreground="{StaticResource DarkBaseBrush}"/>
+                        <TextBlock Text="Чужие заметки" Background="Transparent" Foreground="{StaticResource DarkBaseBrush}"/>
                     </TabItem.Header>
-                    <ListView x:Name="ViewAllHightLights"
-                              SelectedItem="{Binding SelectedHightLight}"
+                    <ListView x:Name="ViewAccessNotes" ItemsSource="{Binding AllAccessNotes}"
+                              SelectedItem="{Binding SelectedNote}"
                         Background="Transparent"
-                        Foreground="{StaticResource BaseTextBrush}"
+                        Foreground="{StaticResource DarkBaseBrush}"
                         FontSize="22"
                         FontFamily="{StaticResource BaseFont}"
                         Height="500px"
-                        Width="650px">
-                        
+                        Width="850px">
+
                     </ListView>
                 </TabItem>
             </TabControl>
-
-            <!--<ListBox Grid.Row="1" VerticalAlignment="Top"
-                     Grid.Column="1"
-                     HorizontalAlignment="Left" Width="600px"
-                     Height="400px" Grid.ColumnSpan="2" 
-                     Foreground="{StaticResource BaseTextBrush}"
-                     ItemsSource="{Binding AllNotes}"
-                     ItemTemplate="{StaticResource gameStatistics}"
-                     >
-                <ListBox.Template>
-                    <ControlTemplate>
-                        <DockPanel>
-                            <Grid
-                            DockPanel.Dock="Top"
-                            Height="30" Background="Transparent">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="2.25*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0"
-                                FontWeight="Bold" HorizontalAlignment="Center">Название записки</TextBlock>
-                                <TextBlock Grid.Column="1" 
-                                FontWeight="Bold" HorizontalAlignment="Center">Описание ззаписки</TextBlock>
-                            </Grid>
-                            <ItemsPresenter/>
-                        </DockPanel>
-                    </ControlTemplate>
-                </ListBox.Template>
-            </ListBox>-->
         </Grid>
     </Border>
 </Window>

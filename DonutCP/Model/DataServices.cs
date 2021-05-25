@@ -34,6 +34,38 @@ namespace DonutCP.Model.DataServices
             return new List<Note>();
         }
 
+        public static string SaveTextToNote( string text, int userId)
+        {
+            using(DonutDataBase db = new DonutDataBase())
+            {
+                string result = "Создано";
+                Note _note = db.Note.FirstOrDefault(p => p.Author_Id == userId);
+                if(_note != null)
+                {
+                    _note.Text_note = text;
+                }
+                db.SaveChanges();
+                return result;
+            }    
+        }
+
+        public static List<Note> GeAllAccessNotes(int userId)
+        {
+            using (DonutDataBase db = new DonutDataBase())
+            {
+                Note _note = db.Note.FirstOrDefault(p => p.Author_Id == userId);
+                if (_note != null && userId == _note.Author_Id)
+                {
+                    var selectedNotes = db.Note.Where(p => p.Author_Id == userId);
+                    var result = selectedNotes.ToList();
+
+                    return result;
+                }
+
+            };
+            return new List<Note>();
+        }
+
         public static List<High_Lights> GetAllHightLights(int userId)
         {
             using (DonutDataBase db = new DonutDataBase())
@@ -161,10 +193,10 @@ namespace DonutCP.Model.DataServices
                     NoteAccess _access = new NoteAccess
                     {
                         NoteId = _note.Id,
-                        UserId = user.Id
+                        UserId = user.Id,
+                        Access_Type = "Full"
                     };
-                    Note newNote = new Note { Nickname = _note.Nickname, Description_note = _note.Description_note, Author_Id = user.Id };
-                    db.Note.Add(newNote);
+                    db.NoteAccess.Add(_access);
                 }
                 else
                 {

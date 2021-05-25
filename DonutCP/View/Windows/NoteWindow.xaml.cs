@@ -16,18 +16,14 @@ using System.Windows.Shapes;
 namespace DonutCP.View.Windows
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для NoteWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class NoteWindow : Window
     {
-        public static ListView AllNotesView;
-        public static ListView AllHitghtLightsView;
-        public static ListView AllAccessView;
-        public MainWindow()
+        public NoteWindow()
         {
             InitializeComponent();
             DataContext = new MainViewModel();
-            AllNotesView = ViewAllNotes;
         }
     }
 }

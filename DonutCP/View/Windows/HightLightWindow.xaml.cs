@@ -1,5 +1,4 @@
-﻿using DonutCP.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,18 +15,13 @@ using System.Windows.Shapes;
 namespace DonutCP.View.Windows
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для HightLightWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class HightLightWindow : Window
     {
-        public static ListView AllNotesView;
-        public static ListView AllHitghtLightsView;
-        public static ListView AllAccessView;
-        public MainWindow()
+        public HightLightWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
-            AllNotesView = ViewAllNotes;
         }
     }
 }

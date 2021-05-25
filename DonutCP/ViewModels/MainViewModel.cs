@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -47,6 +48,18 @@ namespace DonutCP.ViewModels
 				NotifyPropertyChanged("AllNotes");
             }
 		}
+
+		private List<Note> allAccessNotes = DataServices.GeAllAccessNotes(CurrentUserId._CurrentUserID);
+		public List<Note> AllAccessNotes
+		{
+			get { return allAccessNotes; }
+			set
+			{
+				allAccessNotes = value;
+				NotifyPropertyChanged(nameof(allAccessNotes));
+			}
+		}
+
 		private string noteName;
 		public string NoteName
 		{
@@ -94,6 +107,57 @@ namespace DonutCP.ViewModels
 		{
 			AddNewNoteWindow newWind = new AddNewNoteWindow();
 			newWind.Show();
+		});
+
+		private string textNote;
+		public string TextNote
+        {
+            get { return textNote; }
+            set
+            {
+				textNote = value;
+				NotifyPropertyChanged(nameof(TextNote));
+            }
+        }
+		public ICommand OpenNoteWindow => new RelayCommand(obj =>
+		{
+			string resultStr = "Ничего не выбрано";
+			if (SelectedTabItem.Name == "NoteTab" && SelectedNote != null)
+			{
+				CurrentUserId._CurrentNote = SelectedNote;
+				NoteWindow newWind = new NoteWindow();
+				TextNote = CurrentUserId._CurrentNote.Text_note;
+				newWind.Show();
+			}
+
+			//если выноска
+			else if (SelectedTabItem.Name == "HightLightTab" && SelectedHightLight != null)
+			{
+				CurrentUserId._CurrentHightLight = SelectedHightLight;
+				HightLightWindow newWind = new HightLightWindow();
+				newWind.Show();
+			}
+			else
+			{
+				SetNullValuesToProperties();
+				ShowMessageUser(resultStr);
+			}
+		});
+		public ICommand SaveTextNote => new RelayCommand(obj =>
+		{
+			string resultStr = "Не создано";
+			if (TextNote == null || TextNote == "")
+			{
+			}
+			else
+			{
+				resultStr = DataServices.SaveTextToNote(TextNote, CurrentUserId._CurrentUserID);
+				ShowMessageUser(resultStr);
+				Window oldWind = (Window)obj;
+				UpdateAllDataView();
+				SetNullValuesToProperties();
+				oldWind.Close();
+			}
 		});
 
 		//св-во для выделенных элементов

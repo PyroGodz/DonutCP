@@ -125,6 +125,9 @@
     <Compile Include="View\Windows\EditNoteWindow.xaml.cs">
       <DependentUpon>EditNoteWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Windows\HightLightWindow.xaml.cs">
+      <DependentUpon>HightLightWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Windows\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -137,6 +140,9 @@
     </Compile>
     <Compile Include="View\Windows\MessageView.xaml.cs">
       <DependentUpon>MessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\NoteWindow.xaml.cs">
+      <DependentUpon>NoteWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Windows\Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
@@ -185,6 +191,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Windows\HightLightWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Windows\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -194,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Windows\MessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\NoteWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

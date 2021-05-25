@@ -39,5 +39,7 @@ namespace DonutCP.Services
             }
         }
 
+        public static string currentWindowText;
+
     }
 }
