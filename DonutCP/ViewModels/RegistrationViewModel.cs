@@ -59,16 +59,17 @@ namespace DonutCP.ViewModels
         {
             string resultStr = "Что-то пошло не так";
             resultStr = DataServices.CreateUser(Nick, Email, Password);
-            ShowMessageToUser(resultStr);
+            ShowMessageUser(resultStr);
             Window oldWind = (Window)obj;
             Login newMainWindowWindow = new Login();
             newMainWindowWindow.Show();
             oldWind.Close();
         });
 
-        private void ShowMessageToUser(string message)
+        private void ShowMessageUser(string message)
         {
             MessageView messageView = new MessageView(message);
+            messageView.ShowDialog();
         }
     }
 }

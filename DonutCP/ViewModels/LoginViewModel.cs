@@ -53,21 +53,28 @@ namespace DonutCP.ViewModels
                 try
                 {
                     string resultStr = DataServices.LoginUser(Username, Password);
-                    if (resultStr != "Ошибка" && resultStr != "Не заполнено поле" && resultStr != "Неверный логин или пароль")
+                    if (resultStr != "Ошибка" && resultStr != "Не заполнено поле" && resultStr != "Неверный логин или пароль" && resultStr != "Пустое поле")
                     {
+                        CurrentUserId._CurrentUserID = Convert.ToInt32(resultStr);
+                        ShowMessageUser("Успешный вход!");
                         Window oldWind = (Window)obj;
                         MainWindow newMainWindowWindow = new MainWindow();
                         newMainWindowWindow.Show();
-                        CurrentUserId._CurrentUserID = Convert.ToInt32(resultStr);
                         oldWind.Close();
                     }
-                    else ShowMessageToUser(resultStr);
+                    else ShowMessageUser(resultStr); ;
                 }
                 catch
                 {
 
                 }
             });
+
+        private void ShowMessageUser(string message)
+        {
+            MessageView messageView = new MessageView(message);
+            messageView.ShowDialog();
+        }
 
         private void ShowMessageToUser(string message)
         {

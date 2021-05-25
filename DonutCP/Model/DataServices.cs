@@ -15,16 +15,26 @@ namespace DonutCP.Model.DataServices
             using (DonutDataBase db = new DonutDataBase())
             {
                 Note _note = db.Note.FirstOrDefault(p => p.Author_Id== userId);
-                if(_note!=null)
+                if(_note!=null && userId == _note.Author_Id)
                 {
-                    var result = db.Note.ToList();
+                    //var result = db.Note.ToList();
+                    //var selectedNotes = from _note in result
+                    //                    where _note.Author_Id == userId
+                    //                    select _note;
+                    //foreach (Note _note in selectedNotes)
+                    //    result = _note.ToList();
+
+                    var selectedNotes = db.Note.Where(p => p.Author_Id == userId);
+                    var result = selectedNotes.ToList();
+
                     return result;
                 }
+                
             };
             return new List<Note>();
         }
 
-        public static List<High_Lights> GetAllHightLights()
+        public static List<High_Lights> GetAllHightLights(int userId)
         {
             using (DonutDataBase db = new DonutDataBase())
             {
@@ -35,7 +45,7 @@ namespace DonutCP.Model.DataServices
 
         public static string CreateUser(string name, string email, string passsword)
         {
-            string result = "Уже существует";
+            string result = "Пользователь с таким именем уже существует";
             var hasher = new Hasher();
             if (passsword == null || email == null || name == null) return result = "Не заполнено поле";
             var salt = hasher.GetSalt();
@@ -43,14 +53,14 @@ namespace DonutCP.Model.DataServices
             using (DonutDataBase db = new DonutDataBase())
             {
                 //check the user is exist
-                bool checkIsExist = db.Users.Any(el => el.User_Login == name && el.Email == email && el.PasswordHash == hash && el.PasswordSalt == salt);
+                bool checkIsExist = db.Users.Any(el => el.User_Login == name );
                 if (!checkIsExist)
                 {
                     Users newUser = new Users
                     {
                         User_Login = name,
                         Email = email,
-                        PasswordHash = passsword,
+                        PasswordHash = hash,
                         PasswordSalt = salt
                     };
                     db.Users.Add(newUser);
@@ -66,7 +76,7 @@ namespace DonutCP.Model.DataServices
             string result = "Неверный логин или пароль";
             var hasher = new Hasher();
             if (password == null || name == null) return "Не заполнено поле";
-            
+            else if (password == "" || name == "") return "Пустое поле";
             using (DonutDataBase db = new DonutDataBase())
             {
                 Users user = db.Users.FirstOrDefault(p => p.User_Login == name);
@@ -118,28 +128,53 @@ namespace DonutCP.Model.DataServices
             string result = "Такого отела не существует";
             using (DonutDataBase db = new DonutDataBase())
             {
+                db.Entry(note).State = System.Data.Entity.EntityState.Deleted;
                 db.Note.Remove(note);
                 db.SaveChanges();
-                result = "Сделано! Записка " + note.Nickname + " удалена";
+                result = "Сделано! Заметка " + note.Nickname + " удалена";
             }
             return result;
         }
 
-        public static string EditNote(Note oldNote, string newName, string newDescription, string newText)
+        public static string EditNote(Note oldNote, string newName, string newDescription , string access = "" )
         {
-            string result = "Такого сотрудника не существует";
+            string result = "Такой заметки не существует";
             using (DonutDataBase db = new DonutDataBase())
             {
                 //check user is exist
+
                 Note _note = db.Note.FirstOrDefault(el => el.Id == oldNote.Id);
                 if(_note != null)
                 {
-                    _note.Nickname = newName;
-                    _note.Description_note = newDescription;
-                    _note.Text_note = newText;
-                    db.SaveChanges();
-                    result = "Изменено! Записка " + _note.Nickname + "изменена";
+                    if (newName != null && newName != "")
+                        _note.Nickname = newName;
+                    else if (newDescription != null && newDescription != "")
+                        _note.Description_note = newDescription;
                 }
+                else
+                {
+                    return result;
+                }
+                Users user = db.Users.FirstOrDefault(el => el.User_Login == access);
+                if (user != null) 
+                {
+                    NoteAccess _access = new NoteAccess
+                    {
+                        NoteId = _note.Id,
+                        UserId = user.Id
+                    };
+                    Note newNote = new Note { Nickname = _note.Nickname, Description_note = _note.Description_note, Author_Id = user.Id };
+                    db.Note.Add(newNote);
+                }
+                else
+                {
+                    result = "Такого пользователя нет";
+                    return result;
+                }
+
+                
+                db.SaveChanges();
+                result = "Изменено! Записка " + _note.Nickname + "изменена";
                 return result;   
             }
         }
@@ -174,14 +209,13 @@ namespace DonutCP.Model.DataServices
             string result = "Такого отела не существует";
             using (DonutDataBase db = new DonutDataBase())
             {
+                db.Entry(hightLight).State = System.Data.Entity.EntityState.Deleted;
                 db.High_Lights.Remove(hightLight);
                 db.SaveChanges();
                 result = "Сделано! Выноска удалена";
             }
             return result;
         }
-
-
 
     }
 }

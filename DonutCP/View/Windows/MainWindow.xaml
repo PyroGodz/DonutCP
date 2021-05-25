@@ -8,7 +8,7 @@
         xmlns:viewmodels="clr-namespace:DonutCP.ViewModels" 
         mc:Ignorable="d"
         Icon="/Images\DonutIconN.ico"
-        Title="{Binding Title}" Height="650" Width="900"
+        Title="{Binding Title}" Height="650" Width="1200"
         Background="Transparent" ResizeMode="NoResize">
 
 
@@ -60,12 +60,13 @@
                                 Style="{StaticResource MenuButton}"/>
 
                 <RadioButton    Command="{Binding RadioSettings}"
-                                Content="Настройки записки"
+                                Content="Чужие заметки"
                                 Height="70px"
                                 FontSize="22"
                                 Style="{StaticResource MenuButton}"/>
-                <RadioButton    Command="{Binding RadioSettings}"
-                                Content="Кнопка свин"
+                <RadioButton    Command="{Binding LogOut}"
+                                CommandParameter="{Binding ElementName=MainMainWindow}"
+                                Content="Выход из аккаунта"
                                 Height="70px"
                                 FontSize="22"
                                 Style="{StaticResource MenuButton}">
@@ -83,10 +84,17 @@
 
                 <Button
                         Margin="-2,0,0,0"
-                        Command="{Binding EditNote}"
+                        Command="{Binding OpenEditeWindow }"
                         CommandParameter="{Binding SelectedNote}"
                         Style="{StaticResource BaseButton}">
                     <ContentControl Height="50" Content="{StaticResource PanIcon}" />
+                </Button>
+
+                <Button Margin="-2, 0, 0, 0"
+                        Command="{Binding OpenNote}"
+                        CommandParameter=""
+                        Style="{StaticResource BaseButton}">
+                    <ContentControl Height="50px" Content="{StaticResource SearchIcon}"/>
                 </Button>
 
                 <Button
@@ -149,53 +157,84 @@
                 </StackPanel>
             </StackPanel>-->
 
-            <!--<ListView   ItemsSource="{Binding AllNotes}"
-                        Grid.Row="1" Grid.Column="1"
+            <TabControl Grid.Row="1" Grid.Column="1"
+                        SelectedItem="{Binding SelectedTabItem}"
+                        Background="Transparent"
+                        Width="850px"
+                        Height="500px"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center"
+                        Foreground="{StaticResource BaseTextBrush}">
+                <TabItem Name="NoteTab" Background="Transparent" Foreground="{StaticResource BaseTextBrush}">
+                    <TabItem.Header>
+                        <TextBlock Background="Transparent" Foreground="{StaticResource DarkBaseBrush}" Text="Записки"/>
+                    </TabItem.Header>
+                    <ListView x:Name="ViewAllNotes" ItemsSource="{Binding AllNotes}"
+                              SelectedItem="{Binding SelectedNote}"
+                        Background="Transparent"
+                        Foreground="{StaticResource DarkBaseBrush}"
+                        FontSize="22"
+                        FontFamily="{StaticResource BaseFont}"
+                        Height="500px"
+                        Width="850px">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Имя записки"
+                                        DisplayMemberBinding="{Binding Path=Nickname}"
+                                        Width="250px" 
+                                        />
+                                <GridViewColumn Header="Описание записки"
+                                        DisplayMemberBinding="{Binding Path=Description_note}"
+                                        Width="600px"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </TabItem>
+                <TabItem Name="HightLightTab" Background="Transparent" Foreground="{StaticResource BaseTextBrush}">
+                    <TabItem.Header>
+                        <TextBlock Text="Выноски" Background="Transparent" Foreground="{StaticResource DarkBaseBrush}"/>
+                    </TabItem.Header>
+                    <ListView x:Name="ViewAllHightLights"
+                              SelectedItem="{Binding SelectedHightLight}"
                         Background="Transparent"
                         Foreground="{StaticResource BaseTextBrush}"
                         FontSize="22"
                         FontFamily="{StaticResource BaseFont}"
                         Height="500px"
                         Width="650px">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Имя записки"
-                                        DisplayMemberBinding="{Binding Path=Nickname}"
-                                        Width="250px"
-                                        />
+                        
+                    </ListView>
+                </TabItem>
+            </TabControl>
 
-                        <GridViewColumn Header="Описание записки"
-                                        DisplayMemberBinding="{Binding Path=escription_note}"
-                                        Width="400px"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>-->
-
-            <ListBox Grid.Row="1" VerticalAlignment="Center"
-                     HorizontalAlignment="Center" Width="650px"
-                     Height="400px" Grid.ColumnSpan="2" Margin="196,76,48,76"
+            <!--<ListBox Grid.Row="1" VerticalAlignment="Top"
+                     Grid.Column="1"
+                     HorizontalAlignment="Left" Width="600px"
+                     Height="400px" Grid.ColumnSpan="2" 
+                     Foreground="{StaticResource BaseTextBrush}"
+                     ItemsSource="{Binding AllNotes}"
+                     ItemTemplate="{StaticResource gameStatistics}"
                      >
                 <ListBox.Template>
                     <ControlTemplate>
                         <DockPanel>
                             <Grid
-                            Margin="2 0"
                             DockPanel.Dock="Top"
-                            Height="30" Background="#121212">
+                            Height="30" Background="Transparent">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
-                                    <ColumnDefinition Width=".5*"/>
+                                    <ColumnDefinition Width="2.25*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0"
-                                FontWeight="bold" HorizontalAlignment="Center">Название игры</TextBlock>
+                                FontWeight="Bold" HorizontalAlignment="Center">Название записки</TextBlock>
                                 <TextBlock Grid.Column="1" 
-                                FontWeight="Bold" HorizontalAlignment="Center">Рекорд</TextBlock>
+                                FontWeight="Bold" HorizontalAlignment="Center">Описание ззаписки</TextBlock>
                             </Grid>
                             <ItemsPresenter/>
                         </DockPanel>
                     </ControlTemplate>
                 </ListBox.Template>
-            </ListBox>
+            </ListBox>-->
         </Grid>
     </Border>
 </Window>

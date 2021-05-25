@@ -1,4 +1,5 @@
-﻿using DonutCP.ViewModels;
+﻿using DonutCP.Model;
+using DonutCP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,25 @@ namespace DonutCP.Services
 				_currentUserId = value;
 			}
         }
-	}
+        private static Note _currentNote;
+        public static Note _CurrentNote
+        {
+            get { return _currentNote; }
+            set
+            {
+                _currentNote = value;
+            }
+        }
+
+        private static High_Lights currentHightLight;
+        public static High_Lights _CurrentHightLight
+        {
+            get { return currentHightLight; }
+            set
+            {
+                currentHightLight = value;
+            }
+        }
+
+    }
 }
