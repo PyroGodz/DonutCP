@@ -38,27 +38,4 @@
 
         </Style.Setters>
     </Style>
-    <DataTemplate x:Key="gameStatistics">
-        <Grid Margin="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width=".5*"/>
-            </Grid.ColumnDefinitions>
-
-
-            <TextBlock Grid.Column="0"
-            Margin="0"
-            FontWeight="DemiBold"
-            Text="{Binding Nickname}"
-            HorizontalAlignment="Center"
-            Foreground="#121212"/>
-            <TextBlock Grid.Column="1"
-            Margin="0"
-            Text="{Binding Description_note}"
-            FontWeight="DemiBold"
-            HorizontalAlignment="Center"
-            Foreground="#121212"/>
-        </Grid>
-    </DataTemplate>
-
 </ResourceDictionary>

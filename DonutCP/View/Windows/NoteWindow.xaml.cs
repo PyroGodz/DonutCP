@@ -23,7 +23,6 @@ namespace DonutCP.View.Windows
         public NoteWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
         }
     }
 }

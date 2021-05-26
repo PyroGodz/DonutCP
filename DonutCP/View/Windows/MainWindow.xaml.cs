@@ -21,13 +21,14 @@ namespace DonutCP.View.Windows
     public partial class MainWindow : Window
     {
         public static ListView AllNotesView;
-        public static ListView AllHitghtLightsView;
+        public static ListView AllHightLightsView;
         public static ListView AllAccessView;
         public MainWindow()
         {
             InitializeComponent();
             DataContext = new MainViewModel();
             AllNotesView = ViewAllNotes;
+            AllHightLightsView = ViewAccessNotes;
         }
     }
 }

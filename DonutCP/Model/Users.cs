@@ -17,7 +17,6 @@ namespace DonutCP.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Users()
         {
-            this.High_Lights = new HashSet<High_Lights>();
             this.Note = new HashSet<Note>();
             this.NoteAccess = new HashSet<NoteAccess>();
         }
@@ -29,8 +28,6 @@ namespace DonutCP.Model
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<High_Lights> High_Lights { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Note> Note { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

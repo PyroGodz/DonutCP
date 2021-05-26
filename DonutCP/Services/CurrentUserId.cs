@@ -19,6 +19,27 @@ namespace DonutCP.Services
 				_currentUserId = value;
 			}
         }
+
+        private static int _currentNoteId;
+        public static int _CurrentNoteID
+        {
+            get { return _currentNoteId; }
+            set
+            {
+                _currentNoteId = value;
+            }
+        }
+
+        private static int _currentAthorId;
+        public static int _CurrentAthorID
+        {
+            get { return _currentAthorId; }
+            set
+            {
+                _currentNoteId = value;
+            }
+        }
+
         private static Note _currentNote;
         public static Note _CurrentNote
         {
@@ -26,16 +47,6 @@ namespace DonutCP.Services
             set
             {
                 _currentNote = value;
-            }
-        }
-
-        private static High_Lights currentHightLight;
-        public static High_Lights _CurrentHightLight
-        {
-            get { return currentHightLight; }
-            set
-            {
-                currentHightLight = value;
             }
         }
 

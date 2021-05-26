@@ -62,7 +62,7 @@ namespace DonutCP.ViewModels
                         newMainWindowWindow.Show();
                         oldWind.Close();
                     }
-                    else ShowMessageUser(resultStr); ;
+                    else ShowMessageUser(resultStr);
                 }
                 catch
                 {

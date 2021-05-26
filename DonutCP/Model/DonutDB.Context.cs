@@ -26,7 +26,6 @@ namespace DonutCP.Model
         }
     
         public virtual DbSet<Files> Files { get; set; }
-        public virtual DbSet<High_Lights> High_Lights { get; set; }
         public virtual DbSet<Note> Note { get; set; }
         public virtual DbSet<NoteAccess> NoteAccess { get; set; }
         public virtual DbSet<NoteMediaContent> NoteMediaContent { get; set; }

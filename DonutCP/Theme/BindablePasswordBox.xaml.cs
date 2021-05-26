@@ -92,7 +92,7 @@ namespace DonutCP.Services
 
         private void passwordBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            passBoxPlaceholder.Visibility = Visibility.Collapsed;
+            passBoxPlaceholder.Visibility = Visibility.Hidden;
         }
 
         private void passwordBox_LostFocus(object sender, RoutedEventArgs e)

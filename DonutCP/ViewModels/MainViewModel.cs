@@ -49,16 +49,26 @@ namespace DonutCP.ViewModels
             }
 		}
 
-		private List<Note> allAccessNotes = DataServices.GeAllAccessNotes(CurrentUserId._CurrentUserID);
-		public List<Note> AllAccessNotes
+		private List<NoteAccess> allAuthorNote = DataServices.GetAuthorAccessNotes(CurrentUserId._CurrentUserID);
+		public List<NoteAccess> AllAuthorNote
 		{
-			get { return allAccessNotes; }
+			get { return allAuthorNote; }
 			set
 			{
-				allAccessNotes = value;
-				NotifyPropertyChanged(nameof(allAccessNotes));
+                allAuthorNote = value;
+				NotifyPropertyChanged(nameof(AllAuthorNote));
 			}
 		}
+		//private List<Note> allAccessNotes = DataServices.GetAllAccessNotes(CurrentUserId._CurrentUserID);
+		//public List<Note> AllAccessNotes
+		//{
+		//	get { return allAccessNotes; }
+		//	set
+		//	{
+		//		allAccessNotes = value;
+		//		NotifyPropertyChanged(nameof(allAccessNotes));
+		//	}
+		//}
 
 		private string noteName;
 		public string NoteName
@@ -109,61 +119,12 @@ namespace DonutCP.ViewModels
 			newWind.Show();
 		});
 
-		private string textNote;
-		public string TextNote
-        {
-            get { return textNote; }
-            set
-            {
-				textNote = value;
-				NotifyPropertyChanged(nameof(TextNote));
-            }
-        }
-		public ICommand OpenNoteWindow => new RelayCommand(obj =>
-		{
-			string resultStr = "Ничего не выбрано";
-			if (SelectedTabItem.Name == "NoteTab" && SelectedNote != null)
-			{
-				CurrentUserId._CurrentNote = SelectedNote;
-				NoteWindow newWind = new NoteWindow();
-				TextNote = CurrentUserId._CurrentNote.Text_note;
-				newWind.Show();
-			}
-
-			//если выноска
-			else if (SelectedTabItem.Name == "HightLightTab" && SelectedHightLight != null)
-			{
-				CurrentUserId._CurrentHightLight = SelectedHightLight;
-				HightLightWindow newWind = new HightLightWindow();
-				newWind.Show();
-			}
-			else
-			{
-				SetNullValuesToProperties();
-				ShowMessageUser(resultStr);
-			}
-		});
-		public ICommand SaveTextNote => new RelayCommand(obj =>
-		{
-			string resultStr = "Не создано";
-			if (TextNote == null || TextNote == "")
-			{
-			}
-			else
-			{
-				resultStr = DataServices.SaveTextToNote(TextNote, CurrentUserId._CurrentUserID);
-				ShowMessageUser(resultStr);
-				Window oldWind = (Window)obj;
-				UpdateAllDataView();
-				SetNullValuesToProperties();
-				oldWind.Close();
-			}
-		});
+		
 
 		//св-во для выделенных элементов
 		public TabItem SelectedTabItem { get; set; } 
 		public Note SelectedNote { get; set; }
-		public High_Lights SelectedHightLight { get; set; }
+		public NoteAccess SelectedAccess { get; set; }
 
 		public ICommand AddNewNote => new RelayCommand(obj =>
 		{
@@ -206,6 +167,30 @@ namespace DonutCP.ViewModels
 			}
 		});
 
+		public ICommand OpenNoteWindow => new RelayCommand(obj =>
+		{
+			if (SelectedTabItem.Name == "NoteTab" && SelectedNote != null)
+			{
+				CurrentUserId._CurrentNote = SelectedNote;
+				NoteWindow newWind = new NoteWindow();
+				var a = new NoteViewModel();
+				a.TextNote = CurrentUserId._CurrentNote.Text_note;
+				newWind.DataContext = a;
+				newWind.Show();
+			}
+
+			//если выноска
+			if (SelectedTabItem.Name == "AccessNoteTab" && SelectedAccess != null)
+			{
+				CurrentUserId._CurrentNoteID = SelectedAccess.NoteId;
+				CurrentUserId._CurrentNote = DataServices.FindNessNote(CurrentUserId._CurrentUserID,CurrentUserId._CurrentNoteID );
+				NoteWindow newWind = new NoteWindow();
+				var a = new NoteViewModel();
+				a.TextNote = CurrentUserId._CurrentNote.Text_note;
+				newWind.DataContext = a;
+				newWind.Show();
+			}
+		});
 		public ICommand OpenEditeWindow => new RelayCommand(obj =>
 		{
 			string resultStr = "Ничего не выбрано";
@@ -217,10 +202,11 @@ namespace DonutCP.ViewModels
 				newWind.Show();
 			}
 			//если выноска
-			else if (SelectedTabItem.Name == "HightLightTab" && SelectedHightLight != null)
+			else if (SelectedTabItem.Name == "AccessNoteTab" && SelectedAccess != null)
 			{
-				CurrentUserId._CurrentHightLight = SelectedHightLight;
-				EditHightLightWindow newWind = new EditHightLightWindow();
+				CurrentUserId._CurrentNoteID = SelectedAccess.NoteId;
+				CurrentUserId._CurrentNote = DataServices.FindNessNote(CurrentUserId._CurrentUserID, CurrentUserId._CurrentNoteID);
+				EditNoteWindow newWind = new EditNoteWindow();
 				newWind.Show();
 			}
 			else
@@ -228,20 +214,6 @@ namespace DonutCP.ViewModels
 				SetNullValuesToProperties();
 				ShowMessageUser(resultStr);
 			}
-		});
-
-		public ICommand EditItem => new RelayCommand(obj =>
-		{
-			string resultStr = "Ничего не выбрано";
-			resultStr = DataServices.EditNote(CurrentUserId._CurrentNote, NoteName, DescriptionName, UserNameToAccess);
-			UpdateAllDataView();
-		});
-
-		public ICommand EditHightLight => new RelayCommand(obj =>
-		{
-			string resultStr = "Ничего не выбрано";
-			resultStr = DataServices.DeleteHightLight(CurrentUserId._CurrentHightLight);
-			UpdateAllDataView();
 		});
 		public ICommand DeleteNote => new RelayCommand(obj =>
 		{
@@ -253,26 +225,48 @@ namespace DonutCP.ViewModels
 				UpdateAllDataView();
             }
 			//если выноска
-			if (SelectedTabItem.Name == "HightLightTab" && SelectedHightLight != null)
+			else if (SelectedTabItem.Name == "AccessNoteTab" && SelectedAccess != null)
 			{
-				resultStr = DataServices.DeleteHightLight(SelectedHightLight);
-				UpdateAllDataView();
+				CurrentUserId._CurrentNoteID = SelectedAccess.NoteId;
+				CurrentUserId._CurrentNote = DataServices.FindNessNote(CurrentUserId._CurrentUserID, CurrentUserId._CurrentNoteID);
+				resultStr = DataServices.DeleteAccessNote(SelectedAccess);
+				resultStr = DataServices.DeleteNote(CurrentUserId._CurrentNote);
+				UpdateAllAccessNoteView();
 			}
-			SetNullValuesToProperties();
+			else
+            {
+				ShowMessageUser(resultStr);
+            }
+		});
+
+		public ICommand EditItem => new RelayCommand(obj =>
+		{
+			string resultStr = "Ничего не выбрано";
+			resultStr = DataServices.EditNote(CurrentUserId._CurrentNote, NoteName, DescriptionName, UserNameToAccess);
+			UpdateAllDataView();
 			ShowMessageUser(resultStr);
 		});
+
 
         #region updateviews
 		private void UpdateAllDataView()
         {
 			UpdateAllNotesView();
-        }
+		}
 		private void SetNullValuesToProperties()
         {
 			//для заметок
 			NoteName = null;
 			DescriptionName = null;
         }
+		private void UpdateAllAccessNoteView()
+        {
+			AllAuthorNote = DataServices.GetAuthorAccessNotes(CurrentUserId._CurrentUserID);
+			MainWindow.AllHightLightsView.ItemsSource = null;
+			MainWindow.AllHightLightsView.Items.Clear();
+			MainWindow.AllHightLightsView.ItemsSource = AllAuthorNote;
+			MainWindow.AllHightLightsView.Items.Refresh();
+		}
 		private void UpdateAllNotesView()
         {
 			AllNotes = DataServices.GetAllNotes(CurrentUserId._CurrentUserID);

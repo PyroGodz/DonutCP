@@ -2,6 +2,7 @@
 using DonutCP.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,16 +16,9 @@ namespace DonutCP.Model.DataServices
             using (DonutDataBase db = new DonutDataBase())
             {
                 Note _note = db.Note.FirstOrDefault(p => p.Author_Id== userId);
-                if(_note!=null && userId == _note.Author_Id)
+                if(_note!=null)
                 {
-                    //var result = db.Note.ToList();
-                    //var selectedNotes = from _note in result
-                    //                    where _note.Author_Id == userId
-                    //                    select _note;
-                    //foreach (Note _note in selectedNotes)
-                    //    result = _note.ToList();
-
-                    var selectedNotes = db.Note.Where(p => p.Author_Id == userId);
+                    var selectedNotes = db.Note.Where(p => p.Author_Id == userId );
                     var result = selectedNotes.ToList();
 
                     return result;
@@ -33,47 +27,38 @@ namespace DonutCP.Model.DataServices
             };
             return new List<Note>();
         }
-
-        public static string SaveTextToNote( string text, int userId)
+        public static List<NoteAccess> GetAuthorAccessNotes(int userId)
+        {
+            using (DonutDataBase db = new DonutDataBase())
+            {
+                NoteAccess _access = db.NoteAccess.FirstOrDefault(p => p.UserId == userId);
+                if(_access !=null)
+                {
+                    var selectedNotes = db.NoteAccess.Where(el => el.UserId == userId);
+                    var result = selectedNotes.ToList();
+                    return result;
+                }
+            };
+            return new List<NoteAccess>();
+        }
+        public static string SaveTextToNote( string text, int noteId)
         {
             using(DonutDataBase db = new DonutDataBase())
             {
                 string result = "Создано";
-                Note _note = db.Note.FirstOrDefault(p => p.Author_Id == userId);
+                Note _note = db.Note.FirstOrDefault(p => p.Id == noteId);
                 if(_note != null)
                 {
                     _note.Text_note = text;
+
+                    db.SaveChanges();
+                    db.Note.Load();
+                    return text;
                 }
-                db.SaveChanges();
                 return result;
             }    
         }
 
-        public static List<Note> GeAllAccessNotes(int userId)
-        {
-            using (DonutDataBase db = new DonutDataBase())
-            {
-                Note _note = db.Note.FirstOrDefault(p => p.Author_Id == userId);
-                if (_note != null && userId == _note.Author_Id)
-                {
-                    var selectedNotes = db.Note.Where(p => p.Author_Id == userId);
-                    var result = selectedNotes.ToList();
-
-                    return result;
-                }
-
-            };
-            return new List<Note>();
-        }
-
-        public static List<High_Lights> GetAllHightLights(int userId)
-        {
-            using (DonutDataBase db = new DonutDataBase())
-            {
-                var result = db.High_Lights.ToList();
-                return result;
-            }
-        }
 
         public static string CreateUser(string name, string email, string passsword)
         {
@@ -157,7 +142,7 @@ namespace DonutCP.Model.DataServices
 
         public static string DeleteNote(Note note)
         {
-            string result = "Такого отела не существует";
+            string result = "Такой заметки не существует";
             using (DonutDataBase db = new DonutDataBase())
             {
                 db.Entry(note).State = System.Data.Entity.EntityState.Deleted;
@@ -168,9 +153,31 @@ namespace DonutCP.Model.DataServices
             return result;
         }
 
-        public static string EditNote(Note oldNote, string newName, string newDescription , string access = "" )
+        public static string DeleteAccessNote(NoteAccess access)
         {
             string result = "Такой заметки не существует";
+            using(DonutDataBase db = new DonutDataBase())
+            {
+                db.Entry(access).State = System.Data.Entity.EntityState.Deleted;
+                db.NoteAccess.Remove(access);
+                db.SaveChanges();
+                result = "";
+            }
+            return result;
+        }
+
+        public static Note FindNessNote(int userId, int noteId)
+        {
+            using (DonutDataBase db = new DonutDataBase())
+            {
+                Note _note = db.Note.FirstOrDefault(el => el.Id == noteId && el.Author_Id != userId);
+                return _note;
+            }
+        }
+
+        public static string EditNote(Note oldNote, string newName, string newDescription , string access = "" )
+        {
+            string result = "";
             using (DonutDataBase db = new DonutDataBase())
             {
                 //check user is exist
@@ -179,13 +186,19 @@ namespace DonutCP.Model.DataServices
                 if(_note != null)
                 {
                     if (newName != null && newName != "")
+                    {
                         _note.Nickname = newName;
-                    else if (newDescription != null && newDescription != "")
+                        result += "Изменено название! ";
+                    }
+                    if (newDescription != null && newDescription != "")
+                    {
                         _note.Description_note = newDescription;
+                        result += "Изменено описание! ";
+                    }
                 }
                 else
                 {
-                    return result;
+                    return "Такой заметки не существует";
                 }
                 Users user = db.Users.FirstOrDefault(el => el.User_Login == access);
                 if (user != null) 
@@ -197,57 +210,15 @@ namespace DonutCP.Model.DataServices
                         Access_Type = "Full"
                     };
                     db.NoteAccess.Add(_access);
+                    result += "Пользователь получил вашу заметку! ";
                 }
                 else
                 {
-                    result = "Такого пользователя нет";
-                    return result;
+                    result += "Пользователь не выбран! ";
                 }
-
-                
                 db.SaveChanges();
-                result = "Изменено! Записка " + _note.Nickname + "изменена";
                 return result;   
             }
         }
-
-        public static string CreateHightLight(int noteId, int startInex, int lenght, string text, int userId)
-        {
-            string result = "Уже существует";
-            using (DonutDataBase db = new DonutDataBase())
-            {
-                //check the user is exist
-                bool checkIsExist = db.High_Lights.Any(el => el.Note_Id == noteId && el.Start_Text_Index == startInex && el.Length_Hight_Light == lenght && el.Text_Hight_Light == text && el.Author_Id == userId);
-                if (!checkIsExist)
-                {
-                    High_Lights newHightLight = new High_Lights
-                    {
-                        Note_Id = noteId,
-                        Start_Text_Index = startInex,
-                        Length_Hight_Light = lenght,
-                        Text_Hight_Light = text,
-                        Author_Id = userId
-                    };
-                    db.High_Lights.Add(newHightLight);
-                    db.SaveChanges();
-                    result = "Сделано!";
-                }
-                return result;
-            }
-        }
-
-        public static string DeleteHightLight(High_Lights hightLight)
-        {
-            string result = "Такого отела не существует";
-            using (DonutDataBase db = new DonutDataBase())
-            {
-                db.Entry(hightLight).State = System.Data.Entity.EntityState.Deleted;
-                db.High_Lights.Remove(hightLight);
-                db.SaveChanges();
-                result = "Сделано! Выноска удалена";
-            }
-            return result;
-        }
-
     }
 }

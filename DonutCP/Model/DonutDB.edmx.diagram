@@ -4,16 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a1e0830b80c0426b831261735c623585" Name="Diagram1">
-        <EntityTypeShape EntityType="DonutDB.Files" Width="1.5" PointX="3" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DonutDB.High_Lights" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DonutDB.Note" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DonutDB.NoteAccess" Width="1.5" PointX="8.25" PointY="5.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DonutDB.NoteMediaContent" Width="1.5" PointX="5.25" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DonutDB.Users" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+      <Diagram DiagramId="8f602f738162457e82ab91038ffc7148" Name="Diagram1">
+        <EntityTypeShape EntityType="DonutDB.Files" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DonutDB.Note" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DonutDB.NoteAccess" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DonutDB.NoteMediaContent" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DonutDB.Users" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
         <AssociationConnector Association="DonutDB.FK_Media_To_Files" ManuallyRouted="false" />
-        <AssociationConnector Association="DonutDB.FK_Hight_Light_To_Note" ManuallyRouted="false" />
-        <AssociationConnector Association="DonutDB.FK_Hight_Light_To_Users" ManuallyRouted="false" />
         <AssociationConnector Association="DonutDB.FK_Access_To_Note" ManuallyRouted="false" />
         <AssociationConnector Association="DonutDB.FK_Media_To_Note" ManuallyRouted="false" />
         <AssociationConnector Association="DonutDB.FK_Note_To_Users" ManuallyRouted="false" />

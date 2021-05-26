@@ -192,20 +192,33 @@
                         </ListView.View>
                     </ListView>
                 </TabItem>
-                <TabItem Name="HightLightTab" Background="Transparent" 
+                <TabItem Name="AccessNoteTab" Background="Transparent" 
                          Foreground="{StaticResource BaseTextBrush}">
                     <TabItem.Header>
                         <TextBlock Text="Чужие заметки" Background="Transparent" Foreground="{StaticResource DarkBaseBrush}"/>
                     </TabItem.Header>
-                    <ListView x:Name="ViewAccessNotes" ItemsSource="{Binding AllAccessNotes}"
-                              SelectedItem="{Binding SelectedNote}"
+                    <ListView x:Name="ViewAccessNotes" ItemsSource="{Binding AllAuthorNote}"
+                              SelectedItem="{Binding SelectedAccess}"
                         Background="Transparent"
                         Foreground="{StaticResource DarkBaseBrush}"
                         FontSize="22"
                         FontFamily="{StaticResource BaseFont}"
                         Height="500px"
                         Width="850px">
-
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Имя записки"
+                                        DisplayMemberBinding="{Binding Path=NoteId}"
+                                        Width="250px" 
+                                        />
+                                <GridViewColumn Header="Описание записки"
+                                        DisplayMemberBinding="{Binding Path=Id}"
+                                        Width="500px"/>
+                                <GridViewColumn Header="Автор"
+                                        DisplayMemberBinding="{Binding Path=UserId}"
+                                        Width="100px"/>
+                            </GridView>
+                        </ListView.View>
                     </ListView>
                 </TabItem>
             </TabControl>
